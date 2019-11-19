@@ -1,4 +1,5 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom'
 
 class Header extends Component {
 
@@ -6,9 +7,9 @@ class Header extends Component {
     return (
       <nav className="navbar navbar-expand-sm navbar-dark mb-4">
         <div className="container">
-          <div className="navbar-brand" to="/">
+          <Link className="navbar-brand" to="/">
             Team Work
-					</div>
+					</Link>
           <button
             className="navbar-toggler"
             type="button"
@@ -21,22 +22,22 @@ class Header extends Component {
           <div className="collapse navbar-collapse" id="mobile-nav">
             <ul className="navbar-nav mr-auto">
               <li className="nav-item">
-                <div className="nav-link" to="/feeds">
+                <Link className="nav-link" to="/feeds" style={{cursor: 'pointer'}}>
                   {' '}
                   Feeds
-								</div>
+								</Link>
               </li>
             </ul>
             <ul className="navbar-nav ml-auto">
               <li className="nav-item">
-                <div className="nav-link" to="/register">
+                <Link className="nav-link" to="/register" style={{cursor: 'pointer'}}>
                   Sign Up
-					      </div>
+					      </Link>
               </li>
               <li className="nav-item">
-                <div className="nav-link" to="/login">
+                <Link className="nav-link" to="/login" style={{cursor: 'pointer'}}>
                   Login
-								</div>
+								</Link>
               </li>
             </ul>
           </div>
