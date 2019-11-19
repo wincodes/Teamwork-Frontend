@@ -27,19 +27,22 @@ class Login extends Component {
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
   }
-
-  componentWillReceiveProps(newProps) {
-    this.setState({
-      errors: newProps.errors,
-      loading: false
-    })
+  
+  static getDerivedStateFromProps(props, state) {
+    if (props.errors !== state.errors) {
+      return {
+        errors: props.errors,
+        loading: false
+      }
+    }
+    return null;
   }
 
-  componentDidMount(){
-		if(this.props.auth.isAuthenticated){
-			this.props.history.push('/')
-		}
-	}
+  componentDidMount() {
+    if (this.props.auth.isAuthenticated) {
+      this.props.history.push('/')
+    }
+  }
 
   onChange(e) {
     this.setState({ [e.target.name]: e.target.value })
@@ -49,7 +52,7 @@ class Login extends Component {
     e.preventDefault();
     this.setState({ loading: true })
 
-    if(this.state.ermail === '' || this.state.password === ''){
+    if (this.state.ermail === '' || this.state.password === '') {
       this.setState({
         errors: {
           email: 'Email Field is Required',
@@ -102,7 +105,7 @@ class Login extends Component {
                   />
                   {errors.password && (<div className="text-danger">{errors.password}</div>)}
                 </div>
-                <input type="submit" className="btn btn-info btn-block mt-4" />
+                <input type="submit" disabled={this.state.loading} className="btn btn-info btn-block mt-4" />
               </form>
               <FadeLoader
                 className="loading"
