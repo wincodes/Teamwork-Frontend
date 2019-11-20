@@ -9,7 +9,8 @@ import jwt_decode  from 'jwt-decode'
 import Header from './components/layouts/Header';
 import Landing from './components/layouts/Landing';
 import Footer from './components/layouts/Footer';
-import Login from './components/Login'
+import Login from './components/Login';
+import Register from './components/Register'
 
 if (localStorage.jwtToken) {
 	//decode the jwt token
@@ -38,6 +39,7 @@ function App() {
           <div className='router-component'>
             <Route exact path="/" component={Landing} />
             <Route exact path="/login" component={Login} />
+            <Route exact path="/register" component={Register} />
           </div>
           <Footer />
         </div>

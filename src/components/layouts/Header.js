@@ -18,8 +18,7 @@ class Header extends Component {
         {user.usertype === 'admin' && (
           <li className="nav-item">
             <Link className="nav-link" to="/register" style={{ cursor: 'pointer' }}>
-              {' '}
-              Register User
+              Create Employee
 						</Link>
           </li>
         )}
@@ -27,7 +26,7 @@ class Header extends Component {
           <div onClick={this.onLogoutClick.bind(this)} className="nav-link"
             style={{ cursor: 'pointer' }}
           >
-            {' '}
+            {'| '}
             Log Out
 					</div>
         </li>

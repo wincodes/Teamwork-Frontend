@@ -5,7 +5,7 @@ export const login = (userDetails, history) => async dispatch => {
   try {
     let response = await fetch(`${URL}/auth/signin`, {
       method: 'POST',
-      body: JSON.stringify(userDetails), 
+      body: JSON.stringify(userDetails),
       headers: {
         'Content-Type': 'application/json',
       }
@@ -37,7 +37,60 @@ export const login = (userDetails, history) => async dispatch => {
       //set current user
       dispatch(setCurrentUser(decoded))
 
+      dispatch({
+        type: ERRORS,
+        payload: {}
+      })
+
       history.push('/')
+    }
+  } catch (error) {
+    console.log(error)
+    dispatch({
+      type: ERRORS,
+      payload: {
+        feedback: 'An error occurred, please try again'
+      }
+    })
+  }
+}
+
+export const register = (userDetails) => async dispatch => {
+  try {
+    const Bearer = 'Bearer ' + localStorage.jwtToken;
+
+    let response = await fetch(`${URL}/auth/create-user`, {
+      method: 'POST',
+      withCredentials: true,
+      body: JSON.stringify(userDetails),
+      headers: {
+        'Authorization': Bearer,
+        'Content-Type': 'application/json',
+      }
+    });
+    response = await response.json();
+
+    if (response.status === 'error') {
+      if (typeof response.error === "object") {
+        dispatch({
+          type: ERRORS,
+          payload: response.error
+        })
+      } else {
+        dispatch({
+          type: ERRORS,
+          payload: {
+            feedback: response.error
+          }
+        })
+      }
+      return response
+    } else {
+      dispatch({
+        type: ERRORS,
+        payload: {}
+      })
+      return response
     }
   } catch (error) {
     console.log(error)
@@ -63,4 +116,7 @@ export const logoutUser = () => dispatch => {
 
   //set current user to empty object
   dispatch(setCurrentUser({}));
+
+  //redirect to login
+  window.location.href = '/login';
 }

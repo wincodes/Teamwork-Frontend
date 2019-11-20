@@ -52,7 +52,7 @@ class Login extends Component {
     e.preventDefault();
     this.setState({ loading: true })
 
-    if (this.state.ermail === '' || this.state.password === '') {
+    if (this.state.email === '' || this.state.password === '') {
       this.setState({
         errors: {
           email: 'Email Field is Required',
