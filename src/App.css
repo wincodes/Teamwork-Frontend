@@ -28,3 +28,8 @@
 .router-component{
   min-height: 76vh;
 }
+
+.ql-editor {
+  min-height: 50vh !important;
+  font-size: large;
+}

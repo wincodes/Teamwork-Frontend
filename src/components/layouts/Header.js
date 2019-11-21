@@ -23,7 +23,10 @@ class Header extends Component {
           </li>
         )}
         <li className="nav-item dropdown">
-          <div className="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <div className="nav-link dropdown-toggle" id="navbarDropdown" role="button" 
+          data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+          style={{ cursor: 'pointer' }}
+          >
             Create Post
           </div>
           <div className="dropdown-menu" aria-labelledby="navbarDropdown">

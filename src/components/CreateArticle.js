@@ -2,34 +2,33 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { css } from '@emotion/core';
 import FadeLoader from 'react-spinners/FadeLoader';
-import '../styles/upload.css';
 import { connect } from 'react-redux';
-import { postGif } from '../actions/postActions';
+import { postArticle } from '../actions/postActions';
 import { withRouter } from 'react-router-dom';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 const override = css`
   position: fixed;
   left: 45%;
-  top: 15%;
+  top: 35%;
   z-index: 1;
 `;
 
-class CreateGif extends Component {
+class CreateArticle extends Component {
   constructor() {
     super()
 
     this.state = {
       errors: {},
       title: '',
-      image: '',
-      loading: false,
-      file: ''
+      article: '',
+      loading: false
     }
 
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
-    this.onInputChange = this.onInputChange.bind(this)
-    this.removeImage = this.removeImage.bind(this)
+    this.handleEditorInput = this.handleEditorInput.bind(this)
   }
 
   async componentDidMount() {
@@ -51,38 +50,34 @@ class CreateGif extends Component {
   async onSubmit(e) {
     e.preventDefault();
 
-    this.setState({ loading: true })
+    if(this.state.article === ''){
+      this.setState({ errors: { article: 'article cannot be empty'} })
 
-    const form = {
-      title: this.state.title,
-      image: this.state.file
+      return
     }
 
-    await this.props.postGif(form, this.props.history);
+    this.setState({ loading: true })
+
+    const articleDetails = {
+      title: this.state.title,
+      article: this.state.article
+    }
+
+    await this.props.postArticle(articleDetails, this.props.history);
   }
 
   onChange(e) {
     this.setState({ [e.target.name]: e.target.value })
   }
 
-  onInputChange(e) {
-    this.setState({ errors: {}})
-    const file = e.target.files[0];
-    if (file.type.match('image.gif')) {
-      this.setState({ image: URL.createObjectURL(file), file: e.target.files[0] })
-    } else {
-      this.setState({ errors: { image: 'Image must be of Gif Type' } })
-    }
-  }
-
-  removeImage() {
-    this.setState({ image: '' })
+  handleEditorInput(value){
+    this.setState({ article: value})
   }
 
   render() {
     const { errors } = this.state
     return (
-      <div className="login">
+      <div className="Article">
         <div className="container">
           {errors.feedback && (
             <div className="alert alert-danger" role="alert">{errors.feedback}</div>
@@ -90,14 +85,14 @@ class CreateGif extends Component {
           <div className="row">
             <div className="col-md-8 m-auto">
               <div>
-                <h2 className="text-center mb-4">Create Gif Post</h2>
+                <h2 className="text-center mb-4">Create Article</h2>
               </div>
               <form className="form" onSubmit={this.onSubmit}>
                 <div className="form-group">
                   <input
                     type="text"
                     className="form-control form-control-lg"
-                    placeholder="Post Title"
+                    placeholder="Title"
                     name="title"
                     required
                     value={this.state.title}
@@ -106,29 +101,14 @@ class CreateGif extends Component {
                   />
                   {errors.title && (<div className="text-danger">{errors.title}</div>)}
                 </div>
-                
                 <div className="form-group">
-                  <div className="upload-images d-flex justify-content-center align-items-center">
-                    {!this.state.image && <div className="file-input">
-                      <label>Browse files</label>
-                      <input
-                        type="file"
-                        id="file"
-                        onChange={this.onInputChange}
-                        required
-                      />
-                    </div>}
-                    {this.state.image && <div
-                      className="position-relative">
-                      <p onClick={this.removeImage}
-                        className="text-primary" style={{ cursor: 'pointer' }}
-                      >Click to remove image</p>
-                      <img src={this.state.image} alt="Preview" width="70%" />
-                    </div>}
-                  </div>
-                  {errors.image && (<div className="text-danger">{errors.image}</div>)}
+                  <ReactQuill
+                    placeholder="Type Your Article Here"
+                    value={this.state.article}
+                    onChange={this.handleEditorInput}
+                  />
+                  {errors.article && (<div className="text-danger">{errors.article}</div>)}
                 </div>
-
                 <button type="submit" disabled={this.state.loading} className="btn btn-info mt-4">
                   Create
                 </button>
@@ -146,9 +126,9 @@ class CreateGif extends Component {
   }
 }
 
-CreateGif.propTypes = {
+CreateArticle.propTypes = {
   errors: PropTypes.object.isRequired,
-  postGif: PropTypes.func.isRequired,
+  postArticle: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired
 }
 
@@ -157,4 +137,4 @@ const mapStateToProps = state => ({
   errors: state.errors
 })
 
-export default connect(mapStateToProps, { postGif })(withRouter(CreateGif))
+export default connect(mapStateToProps, { postArticle })(withRouter(CreateArticle))
