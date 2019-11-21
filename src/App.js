@@ -11,6 +11,8 @@ import Landing from './components/layouts/Landing';
 import Footer from './components/layouts/Footer';
 import Login from './components/Login';
 import Register from './components/Register'
+import CreateGif from './components/CreateGif';
+import ViewGif from './components/ViewGif'
 
 if (localStorage.jwtToken) {
 	//decode the jwt token
@@ -40,6 +42,8 @@ function App() {
             <Route exact path="/" component={Landing} />
             <Route exact path="/login" component={Login} />
             <Route exact path="/register" component={Register} />
+            <Route exact path="/create-gif" component={CreateGif} />
+            <Route exact path="/gifs/:gifId" component={ViewGif} />
           </div>
           <Footer />
         </div>

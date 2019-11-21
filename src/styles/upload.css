@@ -1,0 +1,35 @@
+.file-input {
+    margin: auto;
+    height: 38px;
+    width: 104px;
+    position: relative;
+}
+
+.file-input label,
+.file-input input {
+    background: #096dd9;
+    color: #fff;
+    width: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    padding: 10px;
+    border-radius: 2px;
+    margin-top: 7px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.file-input input {
+    opacity: 0 !important;
+    z-index: 1 !important;
+}
+
+.upload-images {
+  margin-top: 20px;
+  width: auto;
+  min-height: 23rem;
+  background: #f5f5f5 0% 0% no-repeat padding-box;
+  border: 1px dashed #00000026;
+  opacity: 1;
+}
