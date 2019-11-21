@@ -1,16 +1,11 @@
 import { ERRORS, URL } from '../actions/types'
 
-export const postGif = (form, history) => async dispatch => {
+export const getSingleGif = (gifId) => async dispatch => {
   try {
-    const formData = new FormData()
-    formData.append('title', form.title);
-    formData.append('image', form.image);
-
     const Bearer = 'Bearer ' + localStorage.jwtToken;
 
-    let response = await fetch(`${URL}/gifs`, {
-      method: 'POST',
-      body: formData,
+    let response = await fetch(`${URL}/gifs/${gifId}`, {
+      method: 'GET',
       headers: {
         'Authorization': Bearer,
       }
@@ -31,15 +26,14 @@ export const postGif = (form, history) => async dispatch => {
           }
         })
       }
+      return response
     } else {
       dispatch({
         type: ERRORS,
         payload: {}
       })
 
-      const { gifId } = response.data
-
-      history.push(`/gifs/${gifId}`)
+      return response
     }
   } catch (error) {
     console.log(error)

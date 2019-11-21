@@ -10,7 +10,7 @@ import { withRouter } from 'react-router-dom';
 const override = css`
   position: fixed;
   left: 45%;
-  top: 29%;
+  top: 15%;
   z-index: 1;
 `;
 
@@ -32,6 +32,12 @@ class CreateGif extends Component {
     this.removeImage = this.removeImage.bind(this)
   }
 
+  async componentDidMount() {
+    if (!this.props.auth.isAuthenticated) {
+      this.props.history.push('/login')
+    }
+  }
+
   static getDerivedStateFromProps(props, state) {
     if (props.errors !== state.errors) {
       return {
@@ -47,9 +53,6 @@ class CreateGif extends Component {
 
     this.setState({ loading: true })
 
-    // const formData = new FormData()
-    // formData.append('title', this.state.title);
-    // formData.append('image', this.state.file);
     const form = {
       title: this.state.title,
       image: this.state.file
@@ -63,7 +66,6 @@ class CreateGif extends Component {
   }
 
   onInputChange(e) {
-    // this.setState({ image: e.target.files[0], loaded: 0})
     this.setState({ errors: {}})
     const file = e.target.files[0];
     if (file.type.match('image.gif')) {
