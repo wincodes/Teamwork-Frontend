@@ -22,11 +22,19 @@ class Header extends Component {
 						</Link>
           </li>
         )}
+        <li className="nav-item dropdown">
+          <div className="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Create Post
+          </div>
+          <div className="dropdown-menu" aria-labelledby="navbarDropdown">
+            <Link className="dropdown-item" to="/create-gif">Gif Post</Link>
+            <Link className="dropdown-item" to="/create-article">Article</Link>
+          </div>
+        </li>
         <li className="nav-item">
           <div onClick={this.onLogoutClick.bind(this)} className="nav-link"
             style={{ cursor: 'pointer' }}
           >
-            {'| '}
             Log Out
 					</div>
         </li>
