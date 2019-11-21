@@ -87,7 +87,7 @@ class ViewArticle extends Component {
                     <h6 className="pt-2 pb-5 text-muted">
                       {article.createdOn && this.dateFormat(article.createdOn)}
                     </h6>
-                    <p className="text-justify">{article.article}</p>
+                    <p dangerouslySetInnerHTML={{__html: article.article}} className="text-justify"></p>
                 </div>}
             </div>
           </div>

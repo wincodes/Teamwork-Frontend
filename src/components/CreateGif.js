@@ -102,6 +102,7 @@ class CreateGif extends Component {
                     required
                     value={this.state.title}
                     onChange={this.onChange}
+                    autoFocus
                   />
                   {errors.title && (<div className="text-danger">{errors.title}</div>)}
                 </div>

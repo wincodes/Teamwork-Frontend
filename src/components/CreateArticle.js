@@ -5,6 +5,8 @@ import FadeLoader from 'react-spinners/FadeLoader';
 import { connect } from 'react-redux';
 import { postArticle } from '../actions/postActions';
 import { withRouter } from 'react-router-dom';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 const override = css`
   position: fixed;
@@ -26,6 +28,7 @@ class CreateArticle extends Component {
 
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+    this.handleEditorInput = this.handleEditorInput.bind(this)
   }
 
   async componentDidMount() {
@@ -47,6 +50,12 @@ class CreateArticle extends Component {
   async onSubmit(e) {
     e.preventDefault();
 
+    if(this.state.article === ''){
+      this.setState({ errors: { article: 'article cannot be empty'} })
+
+      return
+    }
+
     this.setState({ loading: true })
 
     const articleDetails = {
@@ -59,6 +68,10 @@ class CreateArticle extends Component {
 
   onChange(e) {
     this.setState({ [e.target.name]: e.target.value })
+  }
+
+  handleEditorInput(value){
+    this.setState({ article: value})
   }
 
   render() {
@@ -79,22 +92,21 @@ class CreateArticle extends Component {
                   <input
                     type="text"
                     className="form-control form-control-lg"
-                    placeholder="Post Title"
+                    placeholder="Title"
                     name="title"
                     required
                     value={this.state.title}
                     onChange={this.onChange}
+                    autoFocus
                   />
                   {errors.title && (<div className="text-danger">{errors.title}</div>)}
                 </div>
                 <div className="form-group">
-                  <textarea className="form-control form-rounded" rows="15"
-                    name="article"
-                    required
+                  <ReactQuill
                     placeholder="Type Your Article Here"
                     value={this.state.article}
-                    onChange={this.onChange}
-                  ></textarea>
+                    onChange={this.handleEditorInput}
+                  />
                   {errors.article && (<div className="text-danger">{errors.article}</div>)}
                 </div>
                 <button type="submit" disabled={this.state.loading} className="btn btn-info mt-4">
