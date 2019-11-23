@@ -82,7 +82,7 @@ class CreateGif extends Component {
   render() {
     const { errors } = this.state
     return (
-      <div className="login">
+      <div className="Create-Gif">
         <div className="container">
           {errors.feedback && (
             <div className="alert alert-danger" role="alert">{errors.feedback}</div>

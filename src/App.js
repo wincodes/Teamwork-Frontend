@@ -15,6 +15,7 @@ import CreateGif from './components/CreateGif';
 import ViewGif from './components/ViewGif';
 import CreateArticle from './components/CreateArticle';
 import ViewArticle from './components/ViewArticle';
+import Feeds from './components/Feeds'
 
 if (localStorage.jwtToken) {
   //decode the jwt token
@@ -48,6 +49,7 @@ function App() {
             <Route exact path="/gifs/:gifId" component={ViewGif} />
             <Route exact path="/create-article" component={CreateArticle} />
             <Route exact path="/articles/:articleId" component={ViewArticle} />
+            <Route exact path="/feeds" component={Feeds} />
           </div>
           <Footer />
         </div>
