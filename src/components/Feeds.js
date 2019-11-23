@@ -70,7 +70,7 @@ class Feeds extends Component {
   render() {
     const { errors, feeds } = this.state
     return (
-      <div className="gif">
+      <div className="feeds">
         <div className="container">
           {errors.feedback && (
             <div className="alert alert-danger" role="alert">{errors.feedback}</div>
@@ -83,7 +83,7 @@ class Feeds extends Component {
                 loading={this.state.loading}
               />
               {feeds.map(feed => (
-                <div key={feed.id} className="pb-3">
+                <div key={feed.id} className="p-3">
                   {feed.article &&
                     <div className="card" style={{ width: "90%" }}>
                       <div className="card-body">

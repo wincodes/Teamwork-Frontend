@@ -77,7 +77,7 @@ class CreateArticle extends Component {
   render() {
     const { errors } = this.state
     return (
-      <div className="Article">
+      <div className="Create-Article">
         <div className="container">
           {errors.feedback && (
             <div className="alert alert-danger" role="alert">{errors.feedback}</div>
