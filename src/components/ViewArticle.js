@@ -5,7 +5,9 @@ import { connect } from 'react-redux';
 import FadeLoader from 'react-spinners/FadeLoader';
 import formatTime from 'date-and-time';
 import { css } from '@emotion/core';
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
+import { deleteArticle } from '../actions/deleteActions';
+import { withRouter } from 'react-router-dom';
 
 const override = css`
   position: fixed;
@@ -23,6 +25,8 @@ class ViewArticle extends Component {
       article: {},
       loading: false
     }
+
+    this.deleteArticle = this.deleteArticle.bind(this)
   }
 
   async componentDidMount() {
@@ -67,6 +71,11 @@ class ViewArticle extends Component {
     return formatTime.format(date, 'hh:mm A, ddd. MMM. DD YYYY');
   }
 
+  deleteArticle() {
+    this.setState({ loading: true })
+    this.props.deleteArticle(this.state.articleId, this.props.history)
+  }
+
   render() {
     const { errors, article } = this.state
     const { authorDetails } = article
@@ -85,18 +94,52 @@ class ViewArticle extends Component {
               />
               {article.title &&
                 <div className="pt-3 pb-3" style={{ width: "90%" }}>
-                    <h2 className="">{article.title}</h2>
-                    <h6 className="card-subtitle mb-2 text-muted">
-                          {article.createdOn && <div>
-                            Posted By:
+                  <h2 className="">{article.title}</h2>
+                  <h6 className="card-subtitle mb-2 text-muted">
+                    {article.createdOn && <div>
+                      Posted By:
                             {
-                              ' ' + authorDetails.firstName + ' ' + authorDetails.lastName + ' ' +
-                              this.dateFormat(article.createdOn)
-                            }
-                          </div>}</h6>
-                    <p dangerouslySetInnerHTML={{__html: article.article}} className="text-justify"></p>
-                    {article.authorId === this.props.auth.user.id &&  
-                    <Link to={`/articles/${article.id}/edit`} className="btn btn-primary form-control">Edit Article</Link>}
+                        ' ' + authorDetails.firstName + ' ' + authorDetails.lastName + ' ' +
+                        this.dateFormat(article.createdOn)
+                      }
+                    </div>}</h6>
+                  <p dangerouslySetInnerHTML={{ __html: article.article }} className="text-justify"></p>
+
+                  {article.authorId === this.props.auth.user.id &&
+                    <div className="form-row">
+                      <div className="col">
+                        <Link to={`/articles/${article.id}/edit`} className="btn btn-primary form-control">Edit Article</Link>
+                      </div>
+                      <div className="col">
+                        <button className="btn btn-outline-danger form-control" data-toggle="modal" disabled={this.state.loading} 
+                          data-target="#deleteModal">Delete Article</button>
+                      </div>
+                    </div>}
+
+                  <div className="modal fade" id="deleteModal" tabIndex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                    <div className="modal-dialog" role="document">
+                      <div className="modal-content">
+                        <div className="modal-header">
+                          <h5 className="modal-title" id="deleteModalLabel">Are You Sure You Want to Delete this Article?</h5>
+                          <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <div className="modal-body text-danger">
+                          You cannot undo this Action.
+                        </div>
+                        <div className="modal-footer flex-row">
+                          <div className="col">
+                            <button type="button" className="btn btn-primary form-control" data-dismiss="modal">Close</button>
+                          </div>
+                          <div className="col">
+                            <div onClick={this.deleteArticle} className="btn btn-outline-danger form-control" 
+                              data-dismiss="modal">Delete Article</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>}
             </div>
           </div>
@@ -109,7 +152,8 @@ class ViewArticle extends Component {
 ViewArticle.propTypes = {
   auth: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired,
-  getSingleArticle: PropTypes.func.isRequired
+  getSingleArticle: PropTypes.func.isRequired,
+  deleteArticle: PropTypes.func.isRequired
 }
 
 const mapStateToProps = state => ({
@@ -117,4 +161,4 @@ const mapStateToProps = state => ({
   errors: state.errors
 })
 
-export default connect(mapStateToProps, { getSingleArticle })(ViewArticle)
+export default connect(mapStateToProps, { getSingleArticle, deleteArticle })(withRouter(ViewArticle))
