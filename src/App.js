@@ -15,7 +15,9 @@ import CreateGif from './components/CreateGif';
 import ViewGif from './components/ViewGif';
 import CreateArticle from './components/CreateArticle';
 import ViewArticle from './components/ViewArticle';
-import Feeds from './components/Feeds'
+import Feeds from './components/Feeds';
+import EditArticle from './components/EditArticle';
+import Notification from './components/Notification'
 
 if (localStorage.jwtToken) {
   //decode the jwt token
@@ -41,6 +43,7 @@ function App() {
       <BrowserRouter>
         <div className="App">
           <Header />
+          <Notification />
           <div className='router-component'>
             <Route exact path="/" component={Landing} />
             <Route exact path="/login" component={Login} />
@@ -50,6 +53,7 @@ function App() {
             <Route exact path="/create-article" component={CreateArticle} />
             <Route exact path="/articles/:articleId" component={ViewArticle} />
             <Route exact path="/feeds" component={Feeds} />
+            <Route exact path="/articles/:articleId/edit" component={EditArticle} />
           </div>
           <Footer />
         </div>

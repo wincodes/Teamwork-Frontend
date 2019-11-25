@@ -60,14 +60,15 @@ class ViewGif extends Component {
     const date = new Date(data);
     const today = new Date()
 
-    if( formatTime.format(today, 'ddd. MMM. DD YYYY') === formatTime.format(date, 'ddd. MMM. DD YYYY')){
+    if (formatTime.format(today, 'ddd. MMM. DD YYYY') === formatTime.format(date, 'ddd. MMM. DD YYYY')) {
       return formatTime.format(date, 'Today, hh:mm A');
     }
-    return formatTime.format(date, 'hh:mm A, ddd. MMM. DD YYYY');
+    return formatTime.format(date, 'ddd. MMM. DD YYYY');
   }
 
   render() {
     const { errors, gifPost } = this.state
+    const { authorDetails } = gifPost
     return (
       <div className="gif">
         <div className="container">
@@ -81,16 +82,23 @@ class ViewGif extends Component {
                 css={override}
                 loading={this.state.loading}
               />
-              {gifPost.title && 
-              <div className="card" style={{ width: "70%" }}>
-                <img src={gifPost.url} className="card-img-top" alt="Gif" />
-                <div className="card-body">
-                  <h5 className="card-title">{gifPost.title}</h5>
-                  <p className="card-text">Created:  
-                  <strong> {gifPost.createdOn && this.dateFormat(gifPost.createdOn) }</strong>
-                  </p>
-                </div>
-              </div>}
+              {gifPost.title &&
+                <div className="card" style={{ width: "70%" }}>
+                  <img src={gifPost.url} className="card-img-top" alt="Gif" />
+                  <div className="card-body">
+                    <h5 className="card-title">{gifPost.title}</h5>
+                    <div className="card-text">Created By:
+                      <strong> {gifPost.createdOn &&
+                        <div>
+                            {
+                            ' ' + authorDetails.firstName + ' ' + authorDetails.lastName + ' ' +
+                            this.dateFormat(gifPost.createdOn)
+                          }
+                        </div>}
+                      </strong>
+                    </div>
+                  </div>
+                </div>}
             </div>
           </div>
         </div>

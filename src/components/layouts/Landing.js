@@ -11,7 +11,7 @@ class Landing extends Component {
         <div className="container">
           {auth.isAuthenticated && (
             <div className="alert alert-success alert-dismissible fade show" role="alert">
-              Logged in as <strong>{auth.user.email}</strong>
+              Logged in as <strong>{auth.user.firstName} {auth.user.lastName}</strong>
               <button type="button" className="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>

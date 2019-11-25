@@ -109,7 +109,7 @@ class CreateArticle extends Component {
                   />
                   {errors.article && (<div className="text-danger">{errors.article}</div>)}
                 </div>
-                <button type="submit" disabled={this.state.loading} className="btn btn-info mt-4">
+                <button type="submit" disabled={this.state.loading} className="btn btn-info form-control mt-4">
                   Create
                 </button>
               </form>
