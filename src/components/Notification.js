@@ -10,11 +10,19 @@ class Notification extends Component {
       notification: {}
     }
 
+    this.show = React.createRef();
+
     this.clearNotification = this.clearNotification.bind(this)
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if(this.state.notification.message !== prevState.notification.message){
+      this.show.current.classList.add('show')
+    }
+  }
+
   static getDerivedStateFromProps(props, state) {
-    if (props.notification) {
+    if (props.notification !== state.notification.message) {
       return {
         notification: props.notification
       }
@@ -23,6 +31,7 @@ class Notification extends Component {
   }
 
   clearNotification() {
+    this.show.current.classList.remove('show')
     this.setState({ notification: '' })
   }
 
@@ -31,10 +40,10 @@ class Notification extends Component {
     return (
       <div>
         {message && <div className={`alert ${type === 'success' ? 'alert-success' : 'alert-danger'} 
-        alert-dismissible fade show`} role="alert">
+        alert-dismissible fade`} role="alert" ref={this.show}>
           <strong>{this.props.notification.message}</strong>
-          <button type="button" className="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true" onClick={this.clearNotification}>&times;</span>
+          <button type="button" onClick={this.clearNotification} className="close" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
           </button>
         </div>}
       </div>

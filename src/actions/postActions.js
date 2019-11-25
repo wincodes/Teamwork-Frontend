@@ -36,6 +36,16 @@ export const postGif = (form, history) => async dispatch => {
         payload: {}
       })
 
+      const notification = {
+        type: 'success',
+        message: 'Post Created Successfully'
+      }
+
+      dispatch({
+        type: NOTIFICATION,
+        payload: notification
+      })
+
       const { gifId } = response.data
 
       history.push(`/gifs/${gifId}`)
@@ -85,6 +95,16 @@ export const postArticle = (articleData, history) => async dispatch => {
       dispatch({
         type: ERRORS,
         payload: {}
+      })
+
+      const notification = {
+        type: 'success',
+        message: 'Article Created Successfully'
+      }
+
+      dispatch({
+        type: NOTIFICATION,
+        payload: notification
       })
 
       const { articleId } = response.data

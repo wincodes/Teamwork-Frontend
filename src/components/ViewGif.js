@@ -5,11 +5,13 @@ import { connect } from 'react-redux';
 import FadeLoader from 'react-spinners/FadeLoader';
 import formatTime from 'date-and-time';
 import { css } from '@emotion/core';
+import { deleteGif } from '../actions/deleteActions';
+import { withRouter } from 'react-router-dom';
 
 const override = css`
   position: fixed;
   left: 45%;
-  top: 35%;
+  top: 15%;
   z-index: 1;
 `;
 
@@ -22,6 +24,8 @@ class ViewGif extends Component {
       gifPost: {},
       loading: false
     }
+
+    this.deletePost = this.deletePost.bind(this)
   }
 
   async componentDidMount() {
@@ -66,6 +70,11 @@ class ViewGif extends Component {
     return formatTime.format(date, 'ddd. MMM. DD YYYY');
   }
 
+  deletePost() {
+    this.setState({ loading: true })
+    this.props.deleteGif(this.state.gifId, this.props.history)
+  }
+
   render() {
     const { errors, gifPost } = this.state
     const { authorDetails } = gifPost
@@ -90,7 +99,7 @@ class ViewGif extends Component {
                     <div className="card-text">Created By:
                       <strong> {gifPost.createdOn &&
                         <div>
-                            {
+                          {
                             ' ' + authorDetails.firstName + ' ' + authorDetails.lastName + ' ' +
                             this.dateFormat(gifPost.createdOn)
                           }
@@ -98,7 +107,38 @@ class ViewGif extends Component {
                       </strong>
                     </div>
                   </div>
+                  {gifPost.authorId === this.props.auth.user.id &&
+                    <button className="btn btn-outline-danger form-control" data-toggle="modal"
+                      data-target="#deleteModal" disabled={this.state.loading}>Delete Post
+                    </button>
+                  }
                 </div>}
+
+              <div className="modal fade" id="deleteModal" tabIndex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                <div className="modal-dialog" role="document">
+                  <div className="modal-content">
+                    <div className="modal-header">
+                      <h5 className="modal-title" id="deleteModalLabel">Are You Sure You Want to Delete this Post?</h5>
+                      <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div className="modal-body text-danger">
+                      You cannot undo this Action.
+                        </div>
+                    <div className="modal-footer flex-row">
+                      <div className="col">
+                        <button type="button" className="btn btn-primary form-control" data-dismiss="modal">Close</button>
+                      </div>
+                      <div className="col">
+                        <div onClick={this.deletePost} className="btn btn-outline-danger form-control"
+                          data-dismiss="modal">Delete Post</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
             </div>
           </div>
         </div>
@@ -110,7 +150,8 @@ class ViewGif extends Component {
 ViewGif.propTypes = {
   auth: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired,
-  getSingleGif: PropTypes.func.isRequired
+  getSingleGif: PropTypes.func.isRequired,
+  deleteGif: PropTypes.func.isRequired
 }
 
 const mapStateToProps = state => ({
@@ -118,4 +159,4 @@ const mapStateToProps = state => ({
   errors: state.errors
 })
 
-export default connect(mapStateToProps, { getSingleGif })(ViewGif)
+export default connect(mapStateToProps, { getSingleGif, deleteGif })(withRouter(ViewGif));
