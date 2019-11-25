@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import FadeLoader from 'react-spinners/FadeLoader';
 import formatTime from 'date-and-time';
 import { css } from '@emotion/core';
+import { Link } from 'react-router-dom'
 
 const override = css`
   position: fixed;
@@ -68,6 +69,7 @@ class ViewArticle extends Component {
 
   render() {
     const { errors, article } = this.state
+    const { authorDetails } = article
     return (
       <div className="articles">
         <div className="container">
@@ -84,10 +86,17 @@ class ViewArticle extends Component {
               {article.title &&
                 <div className="pt-3 pb-3" style={{ width: "90%" }}>
                     <h2 className="">{article.title}</h2>
-                    <h6 className="pt-2 pb-5 text-muted">
-                      {article.createdOn && this.dateFormat(article.createdOn)}
-                    </h6>
+                    <h6 className="card-subtitle mb-2 text-muted">
+                          {article.createdOn && <div>
+                            Posted By:
+                            {
+                              ' ' + authorDetails.firstName + ' ' + authorDetails.lastName + ' ' +
+                              this.dateFormat(article.createdOn)
+                            }
+                          </div>}</h6>
                     <p dangerouslySetInnerHTML={{__html: article.article}} className="text-justify"></p>
+                    {article.authorId === this.props.auth.user.id &&  
+                    <Link to={`/articles/${article.id}/edit`} className="btn btn-primary form-control">Edit Article</Link>}
                 </div>}
             </div>
           </div>

@@ -63,7 +63,7 @@ class Feeds extends Component {
     if (formatTime.format(today, 'ddd. MMM. DD YYYY') === formatTime.format(date, 'ddd. MMM. DD YYYY')) {
       return formatTime.format(date, 'Today, hh:mm A');
     }
-    return formatTime.format(date, 'hh:mm A, ddd. MMM. DD YYYY');
+    return formatTime.format(date, 'ddd. MMM. DD, YYYY');
   }
 
 
@@ -89,10 +89,16 @@ class Feeds extends Component {
                       <div className="card-body">
                         <h5 className="card-title">{feed.title}</h5>
                         <h6 className="card-subtitle mb-2 text-muted">
-                          {feed.createdOn && this.dateFormat(feed.createdOn)}</h6>
+                          {feed.createdOn && <div>
+                            Posted By:
+                            {
+                              ' ' + feed.firstname + ' ' + feed.lastname + ' ' +
+                              this.dateFormat(feed.createdOn)
+                            }
+                          </div>}</h6>
                         <p dangerouslySetInnerHTML={{ __html: feed.article.substring(0, 100) + '<p>....</p>' }}
                           className="card-text text-justify"></p>
-                        <Link to={`/articles/${feed.id}`} className="btn btn-primary card-link">View Article</Link>
+                        <Link to={`/articles/${feed.id}`} className="btn btn-primary form-control card-link">View Article</Link>
                       </div>
                     </div>}
                   {feed.url &&
@@ -103,8 +109,14 @@ class Feeds extends Component {
                           {feed.title}
                         </p>
                         <h6 className="card-subtitle mb-2 text-muted">
-                          {feed.createdOn && this.dateFormat(feed.createdOn)}</h6>
-                        <Link to={`/gifs/${feed.id}`} className="btn btn-primary card-link">View Gif</Link>
+                          {feed.createdOn && <div>
+                            Posted By:
+                            {
+                              ' ' + feed.firstname + ' ' + feed.lastname + ' ' +
+                              this.dateFormat(feed.createdOn)
+                            }
+                          </div>}</h6>
+                        <Link to={`/gifs/${feed.id}`} className="btn btn-primary card-link form-control">View Image  </Link>
                       </div>
                     </div>}
                 </div>
