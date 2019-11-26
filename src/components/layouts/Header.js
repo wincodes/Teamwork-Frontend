@@ -3,11 +3,12 @@ import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { logoutUser } from '../../actions/authActions'
+import { withRouter } from 'react-router-dom';
 
 class Header extends Component {
   onLogoutClick(e) {
     e.preventDefault();
-    this.props.logoutUser();
+    this.props.logoutUser(this.props.history);
   }
 
   render() {
@@ -98,4 +99,4 @@ const mapStateToProps = state => ({
 })
 
 
-export default connect(mapStateToProps, { logoutUser })(Header);
+export default connect(mapStateToProps, { logoutUser })(withRouter(Header));

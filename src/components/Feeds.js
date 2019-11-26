@@ -116,7 +116,7 @@ class Feeds extends Component {
                               this.dateFormat(feed.createdOn)
                             }
                           </div>}</h6>
-                        <Link to={`/gifs/${feed.id}`} className="btn btn-primary card-link form-control">View Image  </Link>
+                        <Link to={`/gifs/${feed.id}`} className="btn btn-info card-link form-control">View Image  </Link>
                       </div>
                     </div>}
                 </div>
