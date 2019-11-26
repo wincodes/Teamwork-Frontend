@@ -7,11 +7,13 @@ import formatTime from 'date-and-time';
 import { css } from '@emotion/core';
 import { deleteGif } from '../actions/deleteActions';
 import { withRouter } from 'react-router-dom';
+import Comment from '../components/Comment';
+import { postComment } from '../actions/postActions'
 
 const override = css`
   position: fixed;
-  left: 45%;
-  top: 15%;
+  left: 50%;
+  top: 10%;
   z-index: 1;
 `;
 
@@ -26,6 +28,7 @@ class ViewGif extends Component {
     }
 
     this.deletePost = this.deletePost.bind(this)
+    this.submitComment = this.submitComment.bind(this)
   }
 
   async componentDidMount() {
@@ -75,23 +78,44 @@ class ViewGif extends Component {
     this.props.deleteGif(this.state.gifId, this.props.history)
   }
 
+  async submitComment(comment) {
+    this.setState({ loading: true })
+    const data = {
+      gifId: this.state.gifId,
+      comment
+    }
+
+    const res = await this.props.postComment(data, 'gif');
+
+    if (res) {
+      const resp = await this.props.getSingleGif(this.state.gifId)
+      if (resp.status === 'success') {
+        const gifPost = resp.data
+        this.setState({ gifPost })
+      }
+    }
+
+    this.setState({ loading: false })
+  }
+
   render() {
     const { errors, gifPost } = this.state
-    const { authorDetails } = gifPost
+    const { authorDetails, comments } = gifPost
     return (
       <div className="gif">
         <div className="container">
           {errors.feedback && (
             <div className="alert alert-danger" role="alert">{errors.feedback}</div>
           )}
-          <div className="row">
-            <div className="col-md-8 m-auto">
-              <FadeLoader
-                className="loading"
-                css={override}
-                loading={this.state.loading}
-              />
-              {gifPost.title &&
+          <FadeLoader
+            className="loading"
+            css={override}
+            loading={this.state.loading}
+          />
+
+          {gifPost.title &&
+            <div className="row">
+              <div className="col-md-8 m-auto">
                 <div className="card" style={{ width: "70%" }}>
                   <img src={gifPost.url} className="card-img-top" alt="Gif" />
                   <div className="card-body">
@@ -112,35 +136,40 @@ class ViewGif extends Component {
                       data-target="#deleteModal" disabled={this.state.loading}>Delete Post
                     </button>
                   }
-                </div>}
+                </div>
 
-              <div className="modal fade" id="deleteModal" tabIndex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
-                <div className="modal-dialog" role="document">
-                  <div className="modal-content">
-                    <div className="modal-header">
-                      <h5 className="modal-title" id="deleteModalLabel">Are You Sure You Want to Delete this Post?</h5>
-                      <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                      </button>
-                    </div>
-                    <div className="modal-body text-danger">
-                      You cannot undo this Action.
-                        </div>
-                    <div className="modal-footer flex-row">
-                      <div className="col">
-                        <button type="button" className="btn btn-primary form-control" data-dismiss="modal">Close</button>
+                <div className="modal fade" id="deleteModal" tabIndex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                  <div className="modal-dialog" role="document">
+                    <div className="modal-content">
+                      <div className="modal-header">
+                        <h5 className="modal-title" id="deleteModalLabel">Are You Sure You Want to Delete this Post?</h5>
+                        <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
                       </div>
-                      <div className="col">
-                        <div onClick={this.deletePost} className="btn btn-outline-danger form-control"
-                          data-dismiss="modal">Delete Post</div>
+                      <div className="modal-body text-danger">
+                        You cannot undo this Action.
+                        </div>
+                      <div className="modal-footer flex-row">
+                        <div className="col">
+                          <button type="button" className="btn btn-primary form-control" data-dismiss="modal">Close</button>
+                        </div>
+                        <div className="col">
+                          <div onClick={this.deletePost} className="btn btn-outline-danger form-control"
+                            data-dismiss="modal">Delete Post</div>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
 
-            </div>
-          </div>
+              <div className="col-md-4 mt-2 flex-column bd-highlight mb-3">
+                <div className="mt-4 pb-2">
+                  <Comment comments={comments} onSubmitComment={this.submitComment} loading={this.state.loading} />
+                </div>
+              </div>
+            </div>}
         </div>
       </div>
     )
@@ -151,7 +180,8 @@ ViewGif.propTypes = {
   auth: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired,
   getSingleGif: PropTypes.func.isRequired,
-  deleteGif: PropTypes.func.isRequired
+  deleteGif: PropTypes.func.isRequired,
+  postComment: PropTypes.func.isRequired
 }
 
 const mapStateToProps = state => ({
@@ -159,4 +189,4 @@ const mapStateToProps = state => ({
   errors: state.errors
 })
 
-export default connect(mapStateToProps, { getSingleGif, deleteGif })(withRouter(ViewGif));
+export default connect(mapStateToProps, { getSingleGif, deleteGif, postComment })(withRouter(ViewGif));

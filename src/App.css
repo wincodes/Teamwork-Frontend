@@ -33,3 +33,22 @@
   min-height: 50vh !important;
   font-size: large;
 }
+
+.comment {
+  overflow-y: scroll;
+  max-height: 50vh;
+}
+
+/* .comment::-webkit-scrollbar {
+  -webkit-appearance: none;
+}
+
+.comment::-webkit-scrollbar:vertical {
+  width: 11px;
+}
+
+.comment::-webkit-scrollbar-thumb {
+  border-radius: 8px;
+  border: 2px solid white;
+  background-color: rgba(0, 0, 0, .5);
+} */

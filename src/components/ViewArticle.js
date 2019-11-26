@@ -8,6 +8,8 @@ import { css } from '@emotion/core';
 import { Link } from 'react-router-dom';
 import { deleteArticle } from '../actions/deleteActions';
 import { withRouter } from 'react-router-dom';
+import Comment from '../components/Comment';
+import { postComment } from '../actions/postActions'
 
 const override = css`
   position: fixed;
@@ -27,6 +29,7 @@ class ViewArticle extends Component {
     }
 
     this.deleteArticle = this.deleteArticle.bind(this)
+    this.submitComment = this.submitComment.bind(this)
   }
 
   async componentDidMount() {
@@ -76,23 +79,43 @@ class ViewArticle extends Component {
     this.props.deleteArticle(this.state.articleId, this.props.history)
   }
 
+  async submitComment(comment) {
+    this.setState({ loading: true })
+    const data = {
+      articleId: this.state.articleId,
+      comment
+    }
+
+    const res = await this.props.postComment(data, 'article');
+
+    if (res) {
+      const resp = await this.props.getSingleArticle(this.state.articleId)
+      if (resp.status === 'success') {
+        const article = resp.data
+        this.setState({ article })
+      }
+    }
+
+    this.setState({ loading: false })
+  }
+
   render() {
     const { errors, article } = this.state
-    const { authorDetails } = article
+    const { authorDetails, comments } = article
     return (
       <div className="articles">
         <div className="container">
           {errors.feedback && (
             <div className="alert alert-danger" role="alert">{errors.feedback}</div>
           )}
-          <div className="row">
-            <div className="col-md-8 m-auto">
-              <FadeLoader
-                className="loading"
-                css={override}
-                loading={this.state.loading}
-              />
-              {article.title &&
+          <FadeLoader
+            className="loading"
+            css={override}
+            loading={this.state.loading}
+          />
+          {article.title &&
+            <div className="row">
+              <div className="col-md-8 m-auto">
                 <div className="pt-3 pb-3" style={{ width: "90%" }}>
                   <h2 className="">{article.title}</h2>
                   <h6 className="card-subtitle mb-2 text-muted">
@@ -111,7 +134,7 @@ class ViewArticle extends Component {
                         <Link to={`/articles/${article.id}/edit`} className="btn btn-primary form-control">Edit Article</Link>
                       </div>
                       <div className="col">
-                        <button className="btn btn-outline-danger form-control" data-toggle="modal" disabled={this.state.loading} 
+                        <button className="btn btn-outline-danger form-control" data-toggle="modal" disabled={this.state.loading}
                           data-target="#deleteModal">Delete Article</button>
                       </div>
                     </div>}
@@ -133,16 +156,22 @@ class ViewArticle extends Component {
                             <button type="button" className="btn btn-primary form-control" data-dismiss="modal">Close</button>
                           </div>
                           <div className="col">
-                            <div onClick={this.deleteArticle} className="btn btn-outline-danger form-control" 
+                            <div onClick={this.deleteArticle} className="btn btn-outline-danger form-control"
                               data-dismiss="modal">Delete Article</div>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>}
+                </div>
+              </div>
+              <div className="col-md-4 mt-2 flex-column bd-highlight mb-3">
+                <div className="mt-4 pb-2">
+                  <Comment comments={comments} onSubmitComment={this.submitComment} loading={this.state.loading} />
+                </div>
+              </div>
             </div>
-          </div>
+          }
         </div>
       </div>
     )
@@ -153,7 +182,8 @@ ViewArticle.propTypes = {
   auth: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired,
   getSingleArticle: PropTypes.func.isRequired,
-  deleteArticle: PropTypes.func.isRequired
+  deleteArticle: PropTypes.func.isRequired,
+  postComment: PropTypes.func.isRequired
 }
 
 const mapStateToProps = state => ({
@@ -161,4 +191,4 @@ const mapStateToProps = state => ({
   errors: state.errors
 })
 
-export default connect(mapStateToProps, { getSingleArticle, deleteArticle })(withRouter(ViewArticle))
+export default connect(mapStateToProps, { getSingleArticle, deleteArticle, postComment })(withRouter(ViewArticle))

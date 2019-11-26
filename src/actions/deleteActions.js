@@ -117,3 +117,10 @@ export const deleteGif = (gifId, history) => async dispatch => {
     })
   }
 }
+
+export const deleteNotification = () => async dispatch => {
+  dispatch({
+    type: NOTIFICATION,
+    payload: {}
+  })
+}

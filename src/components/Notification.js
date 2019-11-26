@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
+import { deleteNotification } from '../actions/deleteActions'
 
 class Notification extends Component {
   constructor() {
@@ -16,7 +17,8 @@ class Notification extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if(this.state.notification.message !== prevState.notification.message){
+    if(Object.keys(this.state.notification).length > 0 
+      && this.state.notification.message !== prevState.notification.message){
       this.show.current.classList.add('show')
     }
   }
@@ -33,6 +35,7 @@ class Notification extends Component {
   clearNotification() {
     this.show.current.classList.remove('show')
     this.setState({ notification: '' })
+    this.props.deleteNotification();
   }
 
   render() {
@@ -53,7 +56,8 @@ class Notification extends Component {
 
 Notification.propTypes = {
   auth: PropTypes.object.isRequired,
-  notification: PropTypes.object.isRequired
+  notification: PropTypes.object.isRequired,
+  deleteNotification: PropTypes.func.isRequired
 }
 
 const mapStateToProps = state => ({
@@ -61,4 +65,4 @@ const mapStateToProps = state => ({
   notification: state.notification
 })
 
-export default connect(mapStateToProps, {})(Notification)
+export default connect(mapStateToProps, { deleteNotification })(Notification)
