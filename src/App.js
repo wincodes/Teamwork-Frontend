@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import { BrowserRouter, Route } from 'react-router-dom';
+import { HashRouter, Route } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import store from './store'
 import { setCurrentUser, logoutUser } from './actions/authActions'
@@ -40,7 +40,7 @@ if (localStorage.jwtToken) {
 function App() {
   return (
     <Provider store={store}>
-      <BrowserRouter>
+      <HashRouter>
         <div className="App">
           <Header />
           <Notification />
@@ -57,7 +57,7 @@ function App() {
           </div>
           <Footer />
         </div>
-      </BrowserRouter>
+      </HashRouter>
     </Provider>
   );
 }
