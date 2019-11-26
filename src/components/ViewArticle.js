@@ -118,7 +118,7 @@ class ViewArticle extends Component {
               <div className="col-md-8 m-auto">
                 <div className="pt-3 pb-3" style={{ width: "90%" }}>
                   <h2 className="">{article.title}</h2>
-                  <h6 className="card-subtitle mb-2 text-muted">
+                  <h6 className="card-subtitle mb-2 pt-2 text-muted">
                     {article.createdOn && <div>
                       Posted By:
                             {
@@ -131,7 +131,7 @@ class ViewArticle extends Component {
                   {article.authorId === this.props.auth.user.id &&
                     <div className="form-row">
                       <div className="col">
-                        <Link to={`/articles/${article.id}/edit`} className="btn btn-primary form-control">Edit Article</Link>
+                        <Link to={`/articles/${article.id}/edit`} className="btn btn-info form-control">Edit Article</Link>
                       </div>
                       <div className="col">
                         <button className="btn btn-outline-danger form-control" data-toggle="modal" disabled={this.state.loading}
@@ -153,7 +153,7 @@ class ViewArticle extends Component {
                         </div>
                         <div className="modal-footer flex-row">
                           <div className="col">
-                            <button type="button" className="btn btn-primary form-control" data-dismiss="modal">Close</button>
+                            <button type="button" className="btn btn-info form-control" data-dismiss="modal">Close</button>
                           </div>
                           <div className="col">
                             <div onClick={this.deleteArticle} className="btn btn-outline-danger form-control"
