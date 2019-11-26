@@ -1,4 +1,5 @@
 import { ERRORS, URL, NOTIFICATION } from '../actions/types'
+
 export const postGif = (form, history) => async dispatch => {
   try {
     const formData = new FormData()
@@ -170,6 +171,84 @@ export const editArticle = (articleData, history) => async dispatch => {
       })
 
       history.push(`/articles/${articleId}`)
+    }
+  } catch (error) {
+    console.log(error)
+    dispatch({
+      type: ERRORS,
+      payload: {
+        feedback: 'An error occurred, please try again'
+      }
+    })
+  }
+}
+
+export const postComment = (data, type) => async dispatch => {
+  try {
+    const Bearer = 'Bearer ' + localStorage.jwtToken;
+
+    let response = '';
+    
+    /* eslint-disable default-case */
+    switch (type) {
+      case 'article':
+        response = await fetch(`${URL}/articles/${data.articleId}/comment`, {
+          method: 'POST',
+          withCredentials: true,
+          body: JSON.stringify(data),
+          headers: {
+            'Authorization': Bearer,
+            'Content-Type': 'application/json',
+          }
+        });
+        break;
+      case 'gif':
+        response = await fetch(`${URL}/gifs/${data.gifId}/comment`, {
+          method: 'POST',
+          withCredentials: true,
+          body: JSON.stringify(data),
+          headers: {
+            'Authorization': Bearer,
+            'Content-Type': 'application/json',
+          }
+        });
+        break;
+    }
+
+    response = await response.json();
+
+    if (response.status === 'error') {
+      if (typeof response.error === "object") {
+        dispatch({
+          type: ERRORS,
+          payload: response.error
+        })
+      } else {
+        dispatch({
+          type: ERRORS,
+          payload: {
+            feedback: response.error
+          }
+        })
+        return response
+      }
+    } else {
+      dispatch({
+        type: ERRORS,
+        payload: {}
+      })
+
+      const notification = {
+        type: 'success',
+        message: 'Comment Created Successfully'
+      }
+
+      dispatch({
+        type: NOTIFICATION,
+        payload: notification
+      })
+
+      return response
     }
   } catch (error) {
     console.log(error)
