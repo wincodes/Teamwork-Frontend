@@ -96,9 +96,9 @@ class Feeds extends Component {
                               this.dateFormat(feed.createdOn)
                             }
                           </div>}</h6>
-                        <p dangerouslySetInnerHTML={{ __html: feed.article.substring(0, 100) + '<p>....</p>' }}
+                        <p dangerouslySetInnerHTML={{ __html: feed.article.substring(0, 150) + '<p>....</p>' }}
                           className="card-text text-justify"></p>
-                        <Link to={`/articles/${feed.id}`} className="btn btn-primary form-control card-link">View Article</Link>
+                        <Link to={`/articles/${feed.id}`} className="btn btn-info form-control card-link">View Article</Link>
                       </div>
                     </div>}
                   {feed.url &&

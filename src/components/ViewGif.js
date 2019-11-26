@@ -152,7 +152,7 @@ class ViewGif extends Component {
                         </div>
                       <div className="modal-footer flex-row">
                         <div className="col">
-                          <button type="button" className="btn btn-primary form-control" data-dismiss="modal">Close</button>
+                          <button type="button" className="btn btn-info form-control" data-dismiss="modal">Close</button>
                         </div>
                         <div className="col">
                           <div onClick={this.deletePost} className="btn btn-outline-danger form-control"
