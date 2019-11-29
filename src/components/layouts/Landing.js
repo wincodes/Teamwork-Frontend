@@ -39,7 +39,7 @@ class Landing extends Component {
         <div className="container">
           <div className="row">
             <div className='col-md-8 m-auto'>
-              <img src={devc} alt="..." class="rounded img-responsive" />
+              <img src={devc} alt="..." class="rounded img-fluid" />
               <div className="p-5">
                 <h3> Team Work.. A Dev-C Project</h3>
                 {auth.isAuthenticated ? authLinks : guestLinks}
