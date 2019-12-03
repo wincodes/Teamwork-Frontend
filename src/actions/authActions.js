@@ -110,7 +110,7 @@ export const setCurrentUser = (decoded) => {
   }
 }
 
-export const logoutUser = (history) => dispatch => {
+export const logoutUser = () => dispatch => {
   //remove the toke from localstorage
   localStorage.removeItem('jwtToken');
 
@@ -118,5 +118,5 @@ export const logoutUser = (history) => dispatch => {
   dispatch(setCurrentUser({}));
 
   //redirect to login
-  history.push(`/login`);
+  window.location.href = '/login';;
 }
