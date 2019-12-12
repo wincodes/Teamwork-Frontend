@@ -31,7 +31,7 @@ class Landing extends Component {
     const guestLinks = (
       <div className="p-3">
         <p className="p-2"><strong>Click the button below to Login</strong></p>
-        <Link to="/login" class="btn btn-primary">Login</Link>
+        <Link to="/login" className="btn btn-primary">Login</Link>
       </div>
     )
     return (
@@ -39,7 +39,7 @@ class Landing extends Component {
         <div className="container">
           <div className="row">
             <div className='col-md-8 m-auto'>
-              <img src={devc} alt="..." class="rounded img-fluid" />
+              <img src={devc} alt="..." className="rounded img-fluid" />
               <div className="p-5">
                 <h3> Team Work.. A Dev-C Project</h3>
                 {auth.isAuthenticated ? authLinks : guestLinks}

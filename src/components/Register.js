@@ -47,11 +47,11 @@ class Register extends Component {
     return null;
   }
 
-  componentDidMount() {
-    if (!this.props.auth.isAuthenticated || this.props.auth.user.usertype !== 'admin') {
-      this.props.history.push('/')
-    }
-  }
+  // componentDidMount() {
+  //   if (!this.props.auth.isAuthenticated || this.props.auth.user.usertype !== 'admin') {
+  //     this.props.history.push('/')
+  //   }
+  // }
 
   async onSubmit(e) {
     e.preventDefault();
@@ -106,7 +106,7 @@ class Register extends Component {
           )}
           <div className="row">
             <div className="col-md-8 m-auto">
-              <h2 className="text-center mb-4">Create an Employee</h2>
+              <h2 className="text-center mb-4">Employee Registration</h2>
               <form onSubmit={this.onSubmit}>
                 <div className="form-group">
                   <input
